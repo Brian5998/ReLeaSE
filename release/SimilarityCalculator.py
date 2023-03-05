@@ -186,6 +186,7 @@ class SimilarityCalculator(object):
         explosive_list = ['[N-]=[N+]=N/C(N=[N+]=[N-])=N\\N1N=NN=C1N=[N+]=[N-]']
         explosiveWEIGHT = Descriptors.ExactMolWt(Chem.MolFromSmiles(explosive_list[0]))
         explosiveNCENT = explosive_list[0].count('N')
+        explosiveCCENT = explosive_list[0].count('C')
         
         #explosive_list = [''N1(COOC2)COOCN2COOC1','CC1(C)OOC(C)(C)OOC(C)(C)OO1','[N-]=[N+]=N/C(N=[N+]=[N-])=N\\N1N=NN=C1N=[N+]=[N-]','O=[N+]([O-])N1CN([N+]([O-])=O)CN([N+]([O-])=O)C1','N1(COOC2)COOCN2COOC1','CC1=C([N+]([O-])=O)C=C([N+]([O-])=O)C=C1[N+]([O-])=O','O=[N+]([O-])OCC(CO[N+]([O-])=O)(CO[N+]([O-])=O)CO[N+]([O-])=O','O=[N+]([O-])OCC(O[N+]([O-])=O)CO[N+]([O-])=O']
         Explosive = [Chem.MolFromSmiles(mol) for mol in explosive_list]
@@ -211,11 +212,15 @@ class SimilarityCalculator(object):
         nScore = []
         for mol in valid_smiles:
             nScore.append(mol.count('N')/explosiveNCENT)
+        
+        cScore = []
+        for mol in valid_smiles:
+            nScore.append(mol.count('C')/explosiveCCENT)
             
         #predictions = [max(predlist) for predlist in similarity_list]
         predictions = similarity_list
         
-        return valid_smiles, predictions, invalid_smiles, weightScore, nScore
+        return valid_smiles, predictions, invalid_smiles, weightScore, nScore, cScore
 
     
     
