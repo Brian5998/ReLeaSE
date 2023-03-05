@@ -214,9 +214,7 @@ class SimilarityCalculator(object):
         #predictions = [max(predlist) for predlist in similarity_list]
         predictions = similarity_list
         
-        weightScoreRETURN IT
-        
-        return valid_smiles, predictions, invalid_smiles
+        return valid_smiles, predictions, invalid_smiles, weightScore, nScore
 
     
     
