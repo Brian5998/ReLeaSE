@@ -206,7 +206,7 @@ class SimilarityCalculator(object):
         
         weightScore = []
         for weight in molWeights:
-            weightScore = abs(weight/explosiveWEIGHT)
+            weightScore.append(abs(weight/explosiveWEIGHT))
             
         nScore = []
         for mol in valid_smiles:
