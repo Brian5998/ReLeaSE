@@ -215,7 +215,7 @@ class SimilarityCalculator(object):
         
         cScore = []
         for mol in valid_smiles:
-            nScore.append(mol.count('C')/explosiveCCENT)
+            cScore.append(mol.count('C')/explosiveCCENT)
             
         #predictions = [max(predlist) for predlist in similarity_list]
         predictions = similarity_list
