@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import statistics
 from rdkit import Chem
 from rdkit.Chem import AllChem, DataStructs
-from rdkit.SimDivFilters.rdSimDivPickers import MaxMinPicker
 from rdkit.Chem import Descriptors
+from rdkit.SimDivFilters.rdSimDivPickers import MaxMinPicker
 import selfies as sf
 from statistics import mean
 
@@ -184,8 +184,8 @@ class SimilarityCalculator(object):
         Generated_fps_list = [AllChem.GetMorganFingerprintAsBitVect(m, 2, 2048) for m in Generated]
         
         explosive_list = ['[N-]=[N+]=N/C(N=[N+]=[N-])=N\\N1N=NN=C1N=[N+]=[N-]']
-        explosiveWEIGHT = ExactMolWt(Explosive_list[0])
-        explosiveNCENT = Explosive_list[0].count('N')
+        explosiveWEIGHT = Descriptors.ExactMolWt(Chem.MolFromSmiles(explosive_list[0]))
+        explosiveNCENT = explosive_list[0].count('N')
         
         #explosive_list = [''N1(COOC2)COOCN2COOC1','CC1(C)OOC(C)(C)OOC(C)(C)OO1','[N-]=[N+]=N/C(N=[N+]=[N-])=N\\N1N=NN=C1N=[N+]=[N-]','O=[N+]([O-])N1CN([N+]([O-])=O)CN([N+]([O-])=O)C1','N1(COOC2)COOCN2COOC1','CC1=C([N+]([O-])=O)C=C([N+]([O-])=O)C=C1[N+]([O-])=O','O=[N+]([O-])OCC(CO[N+]([O-])=O)(CO[N+]([O-])=O)CO[N+]([O-])=O','O=[N+]([O-])OCC(O[N+]([O-])=O)CO[N+]([O-])=O']
         Explosive = [Chem.MolFromSmiles(mol) for mol in explosive_list]
@@ -201,8 +201,8 @@ class SimilarityCalculator(object):
                 print('Bomb was made')
         
         molWeights = []
-        for mol in generated:
-            molWeights.append(ExactMolWt(mol))
+        for mol in Generated:
+            molWeights.append(Descriptors.ExactMolWt(mol))
         
         weightScore = []
         for weight in molWeights:
