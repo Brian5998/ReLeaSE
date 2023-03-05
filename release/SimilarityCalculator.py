@@ -183,6 +183,8 @@ class SimilarityCalculator(object):
         Generated_fps_list = [AllChem.GetMorganFingerprintAsBitVect(m, 2, 2048) for m in Generated]
         
         explosive_list = ['[N-]=[N+]=N/C(N=[N+]=[N-])=N\\N1N=NN=C1N=[N+]=[N-]']
+        explosiveWEIGHT = ExactMolWt(Explosive_list[0])
+        explosiveNCENT = Explosive_list[0].count('N')
         
         #explosive_list = [''N1(COOC2)COOCN2COOC1','CC1(C)OOC(C)(C)OOC(C)(C)OO1','[N-]=[N+]=N/C(N=[N+]=[N-])=N\\N1N=NN=C1N=[N+]=[N-]','O=[N+]([O-])N1CN([N+]([O-])=O)CN([N+]([O-])=O)C1','N1(COOC2)COOCN2COOC1','CC1=C([N+]([O-])=O)C=C([N+]([O-])=O)C=C1[N+]([O-])=O','O=[N+]([O-])OCC(CO[N+]([O-])=O)(CO[N+]([O-])=O)CO[N+]([O-])=O','O=[N+]([O-])OCC(O[N+]([O-])=O)CO[N+]([O-])=O']
         Explosive = [Chem.MolFromSmiles(mol) for mol in explosive_list]
@@ -190,14 +192,30 @@ class SimilarityCalculator(object):
         
         similarity_list = []
         for i in range(len(Generated_fps_list)):
-            single_sim = []
-            for j in range(len(Explosive_fps_list)):
-                single_sim.append(DataStructs.TanimotoSimilarity(Explosive_fps_list[j], Generated_fps_list[i]))
+            single_sim = DataStructs.TanimotoSimilarity(Explosive_fps_list[0], Generated_fps_list[i])
+#             for j in range(len(Explosive_fps_list)):
+#                 single_sim.append(DataStructs.TanimotoSimilarity(Explosive_fps_list[j], Generated_fps_list[i]))
             similarity_list.append(single_sim)
             if single_sim == 1.0:
-                print('Bomb was made') 
+                print('Bomb was made')
         
-        predictions = [max(predlist) for predlist in similarity_list]
+        molWeights = []
+        for mol in generated:
+            molWeights.append(ExactMolWt(mol))
+        
+        weightScore = []
+        for weight in molWeights:
+            weightScore = abs(weight/explosiveWEIGHT)
+            
+        nScore = []
+        for mol in valid_smiles:
+            nScore.append(mol.count('N')/explosiveNCENT)
+            
+        #predictions = [max(predlist) for predlist in similarity_list]
+        predictions = similarity_list
+        
+        weightScoreRETURN IT
+        
         return valid_smiles, predictions, invalid_smiles
 
     
