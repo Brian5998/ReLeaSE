@@ -5,6 +5,7 @@ import statistics
 from rdkit import Chem
 from rdkit.Chem import AllChem, DataStructs
 from rdkit.SimDivFilters.rdSimDivPickers import MaxMinPicker
+from rdkit.Chem import Descriptors
 import selfies as sf
 from statistics import mean
 
